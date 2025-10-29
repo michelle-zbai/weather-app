@@ -19,6 +19,11 @@ export function WeatherDisplay({ weather }: WeatherDisplayProps) {
       <Button href={`/weather/${weather.city.toLowerCase()}`} variant="default">
         View Detailed Forecast
       </Button>
+
+      {/* Link to view all cities' forecasts */}
+      <Button href="/weather/all" variant="ghost">
+        View All Forecast
+      </Button>
     </div>
   );
 }

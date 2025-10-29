@@ -5,7 +5,7 @@
 
 interface WeatherIconProps {
   code: number;
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "sm" | "md" | "lg" | "xl" | "2xl";
 }
 
 export function WeatherIcon({ code, size = "md" }: WeatherIconProps) {
@@ -14,6 +14,7 @@ export function WeatherIcon({ code, size = "md" }: WeatherIconProps) {
     md: "text-4xl",
     lg: "text-6xl",
     xl: "text-8xl",
+    "2xl": "text-[12rem]",
   };
 
   const getIcon = (code: number): string => {

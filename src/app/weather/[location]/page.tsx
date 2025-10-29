@@ -52,14 +52,17 @@ export default async function WeatherDetailPage({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 px-4 py-12">
       <main className="max-w-4xl mx-auto space-y-8">
-        {/* Header with back button */}
-        <div className="flex items-center justify-between">
-          <h1 className="text-4xl font-bold text-zinc-900 dark:text-white">
+        {/* Header with back button and centered city name */}
+        <div className="grid grid-cols-3 items-center">
+          <div className="justify-self-start">
+            <Button href="/" variant="ghost">
+              ← Back to Home
+            </Button>
+          </div>
+          <h1 className="text-4xl font-bold text-zinc-900 dark:text-white text-center justify-self-center">
             {weather.city}
           </h1>
-          <Button href="/" variant="ghost">
-            ← Back to Home
-          </Button>
+          <div>{/* Empty div to maintain grid balance */}</div>
         </div>
 
         {/* Current weather - Large display */}
@@ -72,12 +75,6 @@ export default async function WeatherDetailPage({ params }: PageProps) {
         {/* 3-Day Forecast */}
         <ForecastCard forecast={weather.forecast} />
 
-        {/* Action buttons */}
-        <div className="flex justify-center gap-4">
-          <Button href="/" variant="default">
-            Search Another City
-          </Button>
-        </div>
       </main>
     </div>
   );

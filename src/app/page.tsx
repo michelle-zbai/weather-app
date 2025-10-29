@@ -42,8 +42,8 @@ export default function Home() {
       <main className="w-full max-w-2xl space-y-8">
         {/* Header */}
         <PageHeader
-          title="Weather App"
-          subtitle="Simple weather forecast for your city"
+          title="Weather Forecast"
+          subtitle="Check your city!"
         />
 
         {/* Search at the top */}
