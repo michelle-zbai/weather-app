@@ -9,7 +9,7 @@ export function ForecastCard({ forecast }: ForecastCardProps) {
   return (
     <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-lg p-8 border border-zinc-200 dark:border-zinc-800">
       <h2 className="text-2xl font-semibold text-zinc-900 dark:text-white mb-6">
-        3-Day Forecast
+        7-Day Forecast
       </h2>
 
       <div className="grid md:grid-cols-3 gap-4">

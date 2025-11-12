@@ -1,9 +1,12 @@
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { getWeatherData } from "@/lib/getWeather";
 import { CITIES } from "@/data/cities";
 import { CurrentWeatherDetail } from "@/components/CurrentWeatherDetail";
 import { ForecastCard } from "@/components/ForecastCard";
 import { Button } from "@/components/ui/Button";
+import { ErrorMessage } from "@/components/ErrorMessage";
+import { DetailPageSkeleton } from "@/components/DetailPageSkeleton";
 
 /**
  * Detailed Weather Page
@@ -31,16 +34,25 @@ export default async function WeatherDetailPage({ params }: PageProps) {
     notFound();
   }
 
+  return (
+    <Suspense fallback={<DetailPageSkeleton />}>
+      <WeatherDetailContent cityName={cityName} />
+    </Suspense>
+  );
+}
+
+/**
+ * Inner component that fetches and displays weather details
+ */
+async function WeatherDetailContent({ cityName }: { cityName: string }) {
   // Fetch weather data
-  const weather = getWeatherData(cityName);
+  const weather = await getWeatherData(cityName);
 
   if (!weather) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-zinc-950 px-4">
-        <div className="text-center space-y-4">
-          <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">
-            Weather data unavailable
-          </h1>
+        <div className="text-center space-y-4 max-w-2xl">
+          <ErrorMessage message={`Unable to load weather data for ${cityName}. Please try again later.`} />
           <Button href="/" variant="default">
             Back to Home
           </Button>

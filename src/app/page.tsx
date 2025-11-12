@@ -14,31 +14,35 @@ const DEFAULT_CITY = "Durham";
 
 export default function Home() {
   const [weather, setWeather] = useState<WeatherData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [citySelected, setCitySelected] = useState(false);
 
   useEffect(() => {
-    // Load default city weather on mount
-    loadCityWeather(DEFAULT_CITY);
+    // Don't load default city - wait for user selection
   }, []);
 
-  const loadCityWeather = (cityName: string) => {
+  const loadCityWeather = async (cityName: string) => {
+    setCitySelected(true);
     setLoading(true);
     setError("");
 
-    const data = getWeatherData(cityName);
-
-    if (data) {
-      setWeather(data);
-    } else {
+    try {
+      const data = await getWeatherData(cityName);
+      if (data) {
+        setWeather(data);
+      } else {
+        setError(`Failed to load weather data for ${cityName}`);
+      }
+    } catch (err) {
       setError(`Failed to load weather data for ${cityName}`);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-zinc-950 px-4 py-12">
+    <div className="flex min-h-screen items-start justify-center bg-zinc-50 dark:bg-zinc-950 px-4 py-12">
       <main className="w-full max-w-2xl space-y-8">
         {/* Header */}
         <PageHeader
@@ -51,10 +55,13 @@ export default function Home() {
           <LocationSearch onCitySelect={loadCityWeather} />
         </div>
 
-        {/* Weather display */}
-        {loading && <LoadingState />}
-        {error && <ErrorMessage message={error} />}
-        {weather && !loading && <WeatherDisplay weather={weather} />}
+        {/* Weather display with states */}
+        <div className="min-h-96">
+          {citySelected && loading && <LoadingState />}
+          {citySelected && error && !loading && <ErrorMessage message={error} />}
+          {citySelected && weather && !loading && !error && <WeatherDisplay weather={weather} />}
+          {!citySelected && <div className="text-center text-zinc-400 dark:text-zinc-600 text-lg py-20">Select a city to view weather forecast</div>}
+        </div>
       </main>
     </div>
   );
